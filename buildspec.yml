@@ -15,7 +15,7 @@ phases:
   post_build:
     commands:
       - echo Pushing the Docker image to Amazon ECR...
-      - docker push 637423521355.dkr.ecr.ap-south-1.amazonaws.com/fastapi-lambda:latest
+      - docker push 637423521355.dkr.ecr.ap-south-1.amazonaws.com/milind/fastapi:latest
       - echo Build and push completed successfully.
 
 artifacts:
