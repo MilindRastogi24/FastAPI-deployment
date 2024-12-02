@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 637423521355.dkr.ecr.ap-south-1.amazonaws.com
+      - echo Installing dependencies...
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t fastapi-lambda .
+      - docker tag fastapi-lambda:latest 637423521355.dkr.ecr.ap-south-1.amazonaws.com/fastapi-lambda:latest
+  post_build:
+    commands:
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker push 637423521355.dkr.ecr.ap-south-1.amazonaws.com/fastapi-lambda:latest
+      - echo Build and push completed successfully.
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: yes
+
