@@ -1,15 +1,10 @@
-# Use an official Python runtime as a base image
-FROM public.ecr.aws/lambda/python:3.8
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the current directory contents into the container
-COPY . .
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-
-# Run the application
-CMD ["main.handler"]
+FROM public.ecr.aws/lambda/python:3.11
+# Copy function code
+COPY ./app ${LAMBDA_TASK_ROOT}
+# Install the function's dependencies using file requirements.txt
+# from your project folder.
+COPY requirements.txt .
+# RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}" -U --no-cache-dir
+# Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
+CMD [ "app.handler" ]
