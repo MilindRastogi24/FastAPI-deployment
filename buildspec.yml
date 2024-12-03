@@ -1,6 +1,10 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      # Fetch the unique SHA for tagging Docker images
+      - SHA=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION)
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -9,13 +13,14 @@ phases:
       - pip install -r requirements.txt
   build:
     commands:
+      - echo Build started for commit $SHA
       - echo Building the Docker image...
-      - docker build -t fastapi-lambda .
-      - docker tag fastapi-lambda:latest 637423521355.dkr.ecr.ap-south-1.amazonaws.com/milind/fastapi:latest
+      - docker build -t fastapi-lambda:$SHA .
+      - docker tag fastapi-lambda:$SHA 637423521355.dkr.ecr.ap-south-1.amazonaws.com/milind/fastapi:$SHA
   post_build:
     commands:
       - echo Pushing the Docker image to Amazon ECR...
-      - docker push 637423521355.dkr.ecr.ap-south-1.amazonaws.com/milind/fastapi:latest
+      - docker push 637423521355.dkr.ecr.ap-south-1.amazonaws.com/milind/fastapi:$SHA
       - echo Build and push completed successfully.
 
 artifacts:
