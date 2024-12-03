@@ -6,7 +6,7 @@ handler = Mangum(app)
 @app.get("/")
 def read_root():
     print("hello")
-    return {"message": "Hello, FastAPI on AWS Lambda!"}
+    return {"message": "Hello, FastAPI on AWS Lambda! Some new code"}
 
 
 
