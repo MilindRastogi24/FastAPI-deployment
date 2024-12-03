@@ -23,6 +23,12 @@ phases:
       - docker push 637423521355.dkr.ecr.ap-south-1.amazonaws.com/milind/fastapi:$SHA
       - echo Build and push completed successfully.
 
+      # Check if the Lambda function exists to update or create it
+      - echo "Running the custom shell script..."
+      - chmod +x scripts/create_or_update_lambda_function.sh   # Ensure the script is executable
+      - ./scripts/create_or_update_lambda_function.sh
+
+
 artifacts:
   files:
     - '**/*'
